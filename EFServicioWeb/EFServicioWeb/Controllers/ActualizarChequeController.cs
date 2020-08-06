@@ -3,37 +3,23 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
-using System.Runtime.InteropServices;
 using System.Web.Http;
 using BLL;
 
 namespace EFServicioWeb.Controllers
 {
-    public class ChequeController : ApiController
+    public class ActualizarChequeController : ApiController
     {
-        public HttpResponseMessage Post([FromBody] Cheque cheque)
-        {
-            if (cheque.agregarCuentaCheque("Insertar"))
-            {
-                var message = string.Format("Se guardó con éxito la cuenta y el cheque");
-                return Request.CreateResponse(HttpStatusCode.OK, message);
-            }
-            else
-            {
-                var message = string.Format("No se guardó la cuenta y el cheque.");
-                return Request.CreateResponse(HttpStatusCode.NotAcceptable, message);
-            }
-        }
 
-        public HttpResponseMessage Put(string id, [FromBody] Cheque cheque)
+        public HttpResponseMessage Put(string id, [FromBody] ActualizarCheque actualizarCheque)
         {
-            int resultado = cheque.modificarCheque("Actualizar");
+            int resultado = actualizarCheque.modificarCheque("Actualizar");
             if (resultado == -1)
             {
                 var message = string.Format("Numero de cheque invalido");
                 return Request.CreateResponse(HttpStatusCode.OK, message);
             }
-            else if (resultado==-2)
+            else if (resultado == -2)
             {
                 var message = string.Format("Numero de cuenta invalido");
                 return Request.CreateResponse(HttpStatusCode.OK, message);
@@ -43,14 +29,12 @@ namespace EFServicioWeb.Controllers
                 var message = string.Format("Fondos insuficientes");
                 return Request.CreateResponse(HttpStatusCode.OK, message);
             }
-            else 
+            else
             {
                 var message = string.Format("Cheque aceptado");
                 return Request.CreateResponse(HttpStatusCode.OK, message);
 
             }
-
-
         }
     }
 }

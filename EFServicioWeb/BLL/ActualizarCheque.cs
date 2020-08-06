@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 using DAL;
@@ -6,13 +6,12 @@ using System.Data;
 using System.Data.SqlClient;
 using System.Web;
 using Newtonsoft.Json;
-
 namespace BLL
 {
-    public class Cheque
+   public class ActualizarCheque
     {
         #region propiedades
-       
+
         private string _cheque;
 
         public string cheque
@@ -35,8 +34,8 @@ namespace BLL
             get { return _monto; }
             set { _monto = value; }
         }
-             
-    
+
+
 
         #endregion
 
@@ -49,39 +48,7 @@ namespace BLL
         #endregion
 
         #region metodos
-        public bool agregarCuentaCheque(string accion)
-        {
-            conexion = cls_DAL.trae_conexion("Progra5", ref mensaje_error, ref numero_error);
-            if (conexion == null)
-            {
-                //insertar en la table de errores
-                //    HttpContext.Current.Response.Redirect("Error.aspx?error=" + numero_error.ToString() + "&men=" + mensaje_error);
-                return false;
-            }
-            else
-            {
-                if (accion.Equals("Insertar"))
-                {
-                    sql = "crearCuentaFE";
-                }
-                ParamStruct[] parametros = new ParamStruct[2];
-                cls_DAL.agregar_datos_estructura_parametros(ref parametros, 0, "@cuenta", SqlDbType.VarChar,_cuenta );
-                cls_DAL.agregar_datos_estructura_parametros(ref parametros, 1, "@cheque", SqlDbType.VarChar, _cheque);
-                cls_DAL.conectar(conexion, ref mensaje_error, ref numero_error);
-                cls_DAL.ejecuta_sqlcommand(conexion, sql, true, parametros, ref mensaje_error, ref numero_error);
-                if (numero_error != 0)
-                {
-                   
-                    cls_DAL.desconectar(conexion, ref mensaje_error, ref numero_error);
-                    return false;
-                }
-                else
-                {
-                    cls_DAL.desconectar(conexion, ref mensaje_error, ref numero_error);
-                    return true;
-                }
-            }
-        }
+    
 
         public int modificarCheque(string accion)
         {
@@ -94,7 +61,7 @@ namespace BLL
             {
                 if (accion.Equals("Actualizar"))
                 {
-                    sql = "verificarCheque";
+                    sql = "actualizarMontoCuenta";
                 }
                 ParamStruct[] parametros = new ParamStruct[3];
                 cls_DAL.agregar_datos_estructura_parametros(ref parametros, 0, "@numCheque", SqlDbType.VarChar, _cheque);
@@ -107,7 +74,7 @@ namespace BLL
                     cls_DAL.desconectar(conexion, ref mensaje_error, ref numero_error);
                     return -1;
                 }
-                else if (mensaje_error == "Error al ejecutar la sentencia sql, informacion adicional: -2") 
+                else if (mensaje_error == "Error al ejecutar la sentencia sql, informacion adicional: -2")
                 {
                     cls_DAL.desconectar(conexion, ref mensaje_error, ref numero_error);
                     return -2;
